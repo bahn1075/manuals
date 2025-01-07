@@ -1,0 +1,78 @@
+# mysql shell commands
+1. 공통 명령어
+
+\help: 도움말을 표시하며, 사용 가능한 명령어 목록을 보여줌.
+
+\quit 또는 \exit: MySQL Shell을 종료.
+
+\status: 현재 연결 상태와 세부 정보를 표시.
+
+\reconnect: 현재 연결 정보를 사용해 다시 연결.
+
+\connect: MySQL 서버에 연결. 예: \connect root@localhost:3306.
+
+\use schema_name: 특정 데이터베이스 사용.
+
+\source file_name: SQL 스크립트를 파일에서 실행.
+
+\show: 현재 연결된 데이터베이스 및 테이블 목록 확인.
+
+\clear: 화면 내용을 지움.
+
+
+
+---
+
+2. 모드 관련 명령어
+
+\sql: SQL 모드로 전환 (기본 SQL 명령어를 사용).
+
+\js: JavaScript 모드로 전환 (JavaScript 명령어 및 스크립트 실행 가능).
+
+\py: Python 모드로 전환 (Python 명령어 및 스크립트 실행 가능).
+
+
+
+---
+
+3. SQL 모드 명령어
+
+SHOW DATABASES;: 데이터베이스 목록 보기.
+
+USE database_name;: 특정 데이터베이스로 이동.
+
+SHOW TABLES;: 현재 데이터베이스의 테이블 목록 보기.
+
+SELECT * FROM table_name;: 테이블의 모든 데이터를 조회.
+
+INSERT INTO table_name ...;: 데이터를 테이블에 삽입.
+
+UPDATE table_name ...;: 데이터를 업데이트.
+
+DELETE FROM table_name ...;: 데이터를 삭제.
+
+DESCRIBE table_name;: 테이블 구조 보기.
+
+
+
+---
+
+5. 유용한 Admin 명령어
+
+dba.configureInstance(): MySQL 인스턴스 초기 설정.
+
+dba.checkInstanceConfiguration(): MySQL 인스턴스의 구성 상태 확인.
+
+dba.createCluster(): InnoDB Cluster 생성.
+
+dba.getCluster(): 현재 클러스터 가져오기.
+
+
+
+---
+
+6. 파일 관련 명령어
+
+\source file_name: 외부 파일(SQL 스크립트 등)을 실행.
+
+\edit: 파일을 편집할 수 있는 기본 편집기를 열기.

@@ -1,0 +1,36 @@
+# 여러 repo에서 참조중인 image 삭제
+jinho@ip-10-0-1-202:~:> docker images
+REPOSITORY                    TAG       IMAGE ID       CREATED        SIZE
+bahn1075/mysql-test           v0.1      ab84443f9de3   4 hours ago    603MB
+bahn1075_mysql_image          v0.1      ab84443f9de3   4 hours ago    603MB
+mysql                         latest    56a8c14e1404   2 months ago   603MB
+gcr.io/k8s-minikube/kicbase   v0.0.45   aeed0e1d4642   4 months ago   1.28GB
+
+=> 이런 경우
+
+jinho@ip-10-0-1-202:~:> docker rmi bahn1075_mysql_image:v0.1
+Untagged: bahn1075_mysql_image:v0.1
+jinho@ip-10-0-1-202:~:> docker images
+REPOSITORY                    TAG       IMAGE ID       CREATED        SIZE
+bahn1075/mysql-test           v0.1      ab84443f9de3   4 hours ago    603MB
+mysql                         latest    56a8c14e1404   2 months ago   603MB
+gcr.io/k8s-minikube/kicbase   v0.0.45   aeed0e1d4642   4 months ago   1.28GB
+jinho@ip-10-0-1-202:~:> docker rmi 56a8c14e1404
+Error response from daemon: conflict: unable to delete 56a8c14e1404 (cannot be forced) - image has dependent child images
+jinho@ip-10-0-1-202:~:> docker rmi ab84443f9de3
+Untagged: bahn1075/mysql-test:v0.1
+Untagged: bahn1075/mysql-test@sha256:15e7c40f24842abb7da07e0b48752db5528f73462e65c0df5e9793e3fbef21a3
+Deleted: sha256:ab84443f9de3419dff7ee9a87c2cdc847585310befc29ee48afe31d2252aab31
+Deleted: sha256:e37ad6fa5e9d834371629d7217761f307908b04d52d3c2e20d10de98e68bc426
+jinho@ip-10-0-1-202:~:> ls -alhtr
+
+
+################################################################################
+
+변경사항 commit
+docker commit some-mysql bahn1075/mysql-test:v0.2
+
+docker hub에 푸시할 태그 설정
+
+docker tag 이미지명 계정명/repo명:태그
+docker tag bahn1075/mysql-test:v0.1 bahn1075/mysql-test:v0.2

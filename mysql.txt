@@ -1,0 +1,25 @@
+# container start
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d mysql
+
+# container connect by client
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d mysql
+password => 8033
+
+# mysql repo add
+sudo dnf install https://dev.mysql.com/get/mysql84-community-release-el9-1.noarch.rpm
+
+# mysql shell install
+sudo dnf install https://dev.mysql.com/get/mysql84-community-release-el9-1.noarch.rpm
+
+# connect to localhost by mysql shell
+ MySQL  SQL > \connect root@localhost
+
+# create new image from modified container
+
+
+
+# 내 repository로 부터 실행
+
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d bahn1075/mysql-test:v0.1
+
+# client 접속

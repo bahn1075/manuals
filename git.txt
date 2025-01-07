@@ -1,0 +1,10 @@
+# 현재 디렉토리를 github remote repo로 등록하고 최초 전체 파일을 업로드하는 과정
+
+
+# repot로 등록할 디렉토리에서.
+git init
+git remote add origin git@github.com:bahn1075/<리포지토리이름>.git
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git push -u origin main

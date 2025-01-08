@@ -23,3 +23,38 @@ sudo dnf install https://dev.mysql.com/get/mysql84-community-release-el9-1.noarc
 docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d bahn1075/mysql-test:v0.1
 
 # client 접속
+
+
+
+# volume 생성 및 volume 연결 컨테이너 기동
+docker volume create mysql-data
+
+# volume 매핑 후 컨테이너 기동
+docker run -d \
+  --name mysql-test \
+  -e MYSQL_ROOT_PASSWORD=vkfrhd33 \
+  -p 3306:3306 \
+  -v mysql-data:/var/lib/mysql \
+  bahn1075/mysql-test:v0.2
+
+#컨테이너 재시작
+docker stop mysql-test
+docker start mysql-test
+
+
+# 볼륨의 데이터 확인
+docker volume inspect mysql-data
+
+# 이미 실행중인 컨테이너에 볼륨 추가
+
+# 컨테이너 중지 후 삭제
+docker stop mysql-test
+docker rm mysql-test
+
+# 동일한 이미지로 새 컨테이너를 실행하면서 볼륨 마운트
+docker run -d \
+  --name mysql-test \
+  -e MYSQL_ROOT_PASSWORD=vkfrhd33 \
+  -p 3306:3306 \
+  -v mysql-data:/var/lib/mysql \
+  bahn1075/mysql-test:v0.2

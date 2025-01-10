@@ -1,8 +1,8 @@
 # container start
-docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d mysql
+docker run --name mysql-test -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d mysql
 
 # container connect by client
-docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d mysql
+docker run --name mysql-test -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d mysql
 password => 8033
 
 # mysql repo add
@@ -58,3 +58,79 @@ docker run -d \
   -p 3306:3306 \
   -v mysql-data:/var/lib/mysql \
   bahn1075/mysql-test:v0.2
+  
+
+################################################################################
+
+show databases;
+use information_schema;
+show tables like 'table%';
+show create table tb_test;
+show current_user();
+show processlist;
+kill 프로세스아이디;
+
+-- 서버 아이피
+select @@hostname;
+-- 시간
+select now();
+
+--테이블 정의 확인자
+explain apiolog.IGT_TRACE_LOG;
+
+select curdate();
+select 'Today is ',curdate();
+
+help @;
+help logs;
+
+show users;
+select * from tables;
+create user 'jinho'@'%' identified by 'vkfrhd33';
+grant all privileges on *.* to 'jinho'@'%' with grant option;
+
+select host,user from mysql.user;
+
+update mysql.user set password=PASSWORD('1234') where user='SGIDBA';
+flush privileges;
+
+/* flush privileges;를 언제 쓰는가?
+권한을 'grant'로 수정했을때는 필요없음
+DML로 권한을 수정했을 때는 바로 반영되지 않으므로 flush privileges;를 해야 함
+*/
+
+-- 파라미터 관련
+show variables like '변수명%';
+
+set session 변수명=값;
+
+set global 변수명=값;
+
+-- db가 재기동 되어도 global 변수가 적용되게 하는 법
+-- mysqld-auto.cnf 파일에 씌여짐
+set persist 변수명=값;
+
+-- 영구적용 하되 현재 db에는 반영되지 않게 하는 법
+set persist_only 변수명=값;
+
+-- mysqld-auto.cnf 파일 위치
+/var/lib/mysql/
+
+
+
+
+select host,user from mysql.user;
+
+show grants for sgidba@'%';
+
+help show;
+
+select version();
+
+
+--        docker 용
+
+create table test1 (
+col1 varchar(10) ,
+col2 int
+);

@@ -36,9 +36,12 @@ docker tag 이미지명 계정명/repo명:태그
 docker tag bahn1075/mysql-test:v0.1 bahn1075/mysql-test:v0.2
 
 
+docker push bahn1075/mysql-test:v0.4
 
 
-docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d bahn1075/mysql-test:v0.2
+
+
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d bahn1075/mysql-test
 
 
 

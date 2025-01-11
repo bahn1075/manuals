@@ -1,0 +1,1 @@
+deployment로 설치할 시 볼륨 생성시 volume.yaml 파일의 worker-node01 부분을 'minikube로 변경해야 한다

@@ -1,0 +1,23 @@
+
+
+
+# kubectl 플러그인 설치
+sudo dnf install google-cloud-sdk-gke-gcloud-auth-plugin
+
+
+#kubectl에 gke 클러스터 연결
+
+gcloud container clusters get-credentials autopilot-cluster-1 --zone asia-northeast3  --project fiery-outpost-445408-c6
+
+# 현재 사용중인 context 확인
+kubectl config get-contexts
+
+# 현재 Context에 기본 네임스페이스 설정
+kubectl config set-context --current --namespace=<namespace>
+
+# 젠킨스 설치시 
+helm repo add jenkinsci https://charts.jenkins.io
+helm repo update
+
+helm search repo jenkinsci
+

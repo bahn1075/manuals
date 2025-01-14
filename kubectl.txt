@@ -28,13 +28,41 @@ helm repo update
 
 helm search repo jenkinsci
 
-helm install jenkins jenkinsci/jenkins --set service.type=LoadBalancer
+helm install jenkins jenkinsci/jenkins
 => 처음 실행하면 pod가 생성될 노드풀이 없다고 에러가 난다
    이때 클러스터로 들어가보면 노드풀을 생성한다는 메세지가 떠 있다
    auto pilot 모드라서 그런거 같다
 => 맞다. 기다리니 pod 2/2 running 상태가 되었다.
 kubectl logs -f jenkins-0
 
+
+pod가 준비되면 ingress를 생성해서 서비스를 연결하자
+
+vi ingress.yaml
+=>
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: basic-ingress
+spec:
+  defaultBackend:
+    service:
+      name: jenkins
+      port:
+        number: 8080
+
+kubectl apply -f ingress.yaml
+
+
+kubectl get secret jenkins -o jsonpath='{.data.jenkins-admin-password}' | base64 -d
+
+=> cD1s8PJtBBpHqYB2cH6q53 (%가 함께 출려되면 그건 뺀다)
+
+
+GKE 워크로드 화면에서 ingress 접속정보를 누르면 연결되고
+최초 로그인 화면에서 admin / 위 패스워드 추출결과
+
+이후 사용자설정에서 본인이 원하는 패스워드로 변경한다
 
 
 gcloud container clusters get-credentials autopilot-cluster-1 --region asia-northeast3 --project fiery-outpost-445408-c6 \
@@ -43,5 +71,12 @@ gcloud container clusters get-credentials autopilot-cluster-1 --region asia-nort
 helm upgrade jenkins jenkinsci/jenkins --set service.type=LoadBalancer
 
 helm upgrade [RELEASE_NAME] jenkinsci/jenkins --set service.type=LoadBalancer
- 
+
+# helm 차트 내용을 values.yaml 파일로 추출한 이후 upgrade 적용
+
 helm upgrade jenkins jenkinsci/jenkins -f /home/jinho/git/kubernetes-jenkins/jenkins-values.yaml
+
+
+helm install jenkins jenkinsci/jenkins --set serviceType=LoadBalancer
+
+

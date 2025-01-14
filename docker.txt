@@ -41,7 +41,7 @@ docker push bahn1075/mysql-test:v0.4
 
 
 
-docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d bahn1075/mysql-test
+docker run --name mysql-test -e MYSQL_ROOT_PASSWORD=vkfrhd33 -p 3306:3306 -d bahn1075/mysql-test
 
 
 

@@ -12,8 +12,15 @@ gcloud container clusters get-credentials autopilot-cluster-1 --zone asia-northe
 # 현재 사용중인 context 확인
 kubectl config get-contexts
 
+# namespace 생성
+kubectl create namespace devops-tools
+
 # 현재 Context에 기본 네임스페이스 설정
-kubectl config set-context --current --namespace=<namespace>
+kubectl config set-context --current --namespace=devops-tools
+
+# 변경된된 context 확인
+kubectl config get-contexts
+
 
 # 젠킨스 설치시 
 helm repo add jenkinsci https://charts.jenkins.io
@@ -21,3 +28,20 @@ helm repo update
 
 helm search repo jenkinsci
 
+helm install jenkins jenkinsci/jenkins --set service.type=LoadBalancer
+=> 처음 실행하면 pod가 생성될 노드풀이 없다고 에러가 난다
+   이때 클러스터로 들어가보면 노드풀을 생성한다는 메세지가 떠 있다
+   auto pilot 모드라서 그런거 같다
+=> 맞다. 기다리니 pod 2/2 running 상태가 되었다.
+kubectl logs -f jenkins-0
+
+
+
+gcloud container clusters get-credentials autopilot-cluster-1 --region asia-northeast3 --project fiery-outpost-445408-c6 \
+ && kubectl port-forward --namespace devops-tools $(kubectl get pod --namespace devops-tools --selector="app.kubernetes.io/component=jenkins-controller,app.kubernetes.io/instance=jenkins" --output jsonpath='{.items[0].metadata.name}') 8080:8080
+ 
+helm upgrade jenkins jenkinsci/jenkins --set service.type=LoadBalancer
+
+helm upgrade [RELEASE_NAME] jenkinsci/jenkins --set service.type=LoadBalancer
+ 
+helm upgrade jenkins jenkinsci/jenkins -f /home/jinho/git/kubernetes-jenkins/jenkins-values.yaml

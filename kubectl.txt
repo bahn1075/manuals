@@ -21,7 +21,25 @@ kubectl config set-context --current --namespace=devops-tools
 # 변경된된 context 확인
 kubectl config get-contexts
 
+###############################################################################
+############################## GITLAB 설치치 ####################################
+###############################################################################
 
+helm repo add gitlab https://charts.gitlab.io/
+
+helm install gitlab gitlab/gitlab \
+  --set global.hosts.domain=DOMAIN \
+  --set certmanager-issuer.email=me@example.com
+  
+kubectl get ingress -lrelease=gitlab
+
+kubectl get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 --decode ; echo
+
+
+
+###############################################################################
+############################## 젠킨스 설치 ####################################
+###############################################################################
 # 젠킨스 설치시 
 helm repo add jenkinsci https://charts.jenkins.io
 helm repo update
@@ -33,6 +51,7 @@ helm install jenkins jenkinsci/jenkins
    이때 클러스터로 들어가보면 노드풀을 생성한다는 메세지가 떠 있다
    auto pilot 모드라서 그런거 같다
 => 맞다. 기다리니 pod 2/2 running 상태가 되었다.
+
 kubectl logs -f jenkins-0
 
 
@@ -53,30 +72,22 @@ spec:
 
 kubectl apply -f ingress.yaml
 
-
+# jenkins admin 사용자의 최초 자동생성 패스워드를 확인하자
 kubectl get secret jenkins -o jsonpath='{.data.jenkins-admin-password}' | base64 -d
-
 => cD1s8PJtBBpHqYB2cH6q53 (%가 함께 출려되면 그건 뺀다)
 
 
-GKE 워크로드 화면에서 ingress 접속정보를 누르면 연결되고
+GKE 워크로드 화면에서 ingress 접속정보를 누르면 웹화면에 연결되고
 최초 로그인 화면에서 admin / 위 패스워드 추출결과
 
 이후 사용자설정에서 본인이 원하는 패스워드로 변경한다
 
-
-gcloud container clusters get-credentials autopilot-cluster-1 --region asia-northeast3 --project fiery-outpost-445408-c6 \
- && kubectl port-forward --namespace devops-tools $(kubectl get pod --namespace devops-tools --selector="app.kubernetes.io/component=jenkins-controller,app.kubernetes.io/instance=jenkins" --output jsonpath='{.items[0].metadata.name}') 8080:8080
- 
-helm upgrade jenkins jenkinsci/jenkins --set service.type=LoadBalancer
-
-helm upgrade [RELEASE_NAME] jenkinsci/jenkins --set service.type=LoadBalancer
-
-# helm 차트 내용을 values.yaml 파일로 추출한 이후 upgrade 적용
-
-helm upgrade jenkins jenkinsci/jenkins -f /home/jinho/git/kubernetes-jenkins/jenkins-values.yaml
+=> 웹 설정화면에서 플러그인 설치 후 웹화면 상에서 젠킨스 restart를 하는 경우 
+   시간이 꽤 걸리면서 재시작이 되고 이후 admin 패스워드가 reset 된다.
 
 
-helm install jenkins jenkinsci/jenkins --set serviceType=LoadBalancer
 
-
+helm install gitlab gitlab/gitlab \
+  --set global.hosts.domain=DOMAIN \
+  --set certmanager-issuer.email=me@example.com
+  

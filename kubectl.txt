@@ -9,17 +9,24 @@ sudo dnf install google-cloud-sdk-gke-gcloud-auth-plugin
 
 gcloud container clusters get-credentials autopilot-cluster-1 --zone asia-northeast3  --project fiery-outpost-445408-c6
 
-# 현재 사용중인 context 확인
-kubectl config get-contexts
-
 # namespace 생성
 kubectl create namespace devops-tools
 
-# 현재 Context에 기본 네임스페이스 설정
+# 현재 사용중인 context 확인
+kubectl config get-contexts
+
+# 현재 Context에 기본 네임스페이스를 GKE의 devops-tools로로 설정
 kubectl config set-context --current --namespace=devops-tools
 
 # 변경된된 context 확인
 kubectl config get-contexts
+
+# 현재 GKE로 연결된 kubectl을 다시 local minikuibe로 변경
+kubectl config use-context minikube 
+
+# 현재 네임스페이스를 변경경
+kubectl config set-context --current --namespace=default
+
 
 ###############################################################################
 ############################## GITLAB 설치치 ####################################
@@ -28,8 +35,8 @@ kubectl config get-contexts
 helm repo add gitlab https://charts.gitlab.io/
 
 helm install gitlab gitlab/gitlab \
-  --set global.hosts.domain=DOMAIN \
-  --set certmanager-issuer.email=me@example.com
+  --set global.hosts.domain=192.168.56.101.nip.io \
+  --set certmanager-issuer.email=bahn1075@gmail.com
   
 kubectl get ingress -lrelease=gitlab
 
